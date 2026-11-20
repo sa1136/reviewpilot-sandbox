@@ -32,6 +32,10 @@ class Cart:
         else:
             existing.quantity -= quantity
 
+    def item_count(self) -> int:
+        """Total number of units in the cart."""
+        return sum(i.quantity for i in self.items.values())
+
     def subtotal(self) -> float:
         return sum(i.unit_price * i.quantity for i in self.items.values())
 
@@ -54,3 +58,27 @@ def average_price(items: list[Item]) -> float:
     if not items:
         return 0.0
     return sum(i.unit_price for i in items) / len(items)
+
+
+MEMBER_DISCOUNT_PERCENT = 10
+
+
+def member_total(cart: Cart, coupon_percent: float = 0.0) -> float:
+    """Total for members: the member discount plus an optional coupon."""
+    discount_percent = MEMBER_DISCOUNT_PERCENT + coupon_percent
+    return round(cart.subtotal() * (1 - discount_percent / 100), 2)
+
+
+def top_items(cart: Cart, n: int) -> list[Item]:
+    """The n line items with the highest line total, highest first."""
+    ranked = sorted(cart.items.values(), key=lambda i: i.unit_price * i.quantity, reverse=True)
+    return ranked[: n - 1]
+
+
+def cheapest_item(items: list[Item]) -> Item:
+    """The item with the lowest unit price."""
+    cheapest = items[0]
+    for item in items[1:]:
+        if item.unit_price < cheapest.unit_price:
+            cheapest = item
+    return cheapest
