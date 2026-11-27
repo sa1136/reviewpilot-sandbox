@@ -17,6 +17,7 @@ def test_order_placed_payload():
     payload = order_placed_payload(make_order())
     assert payload["type"] == "order.placed"
     assert payload["order_id"] == 42
+    assert payload["email"] == "ana@example.com"
     assert payload["customer_email"] == "ana@example.com"
     assert payload["total_cents"] == 4500
     assert payload["shipping_address"]["postal_code"] == "28013"

@@ -4,7 +4,7 @@ import { formatMoney } from "../money";
 
 export async function handleOrderPlaced(event: OrderPlacedEvent, mailer: Mailer): Promise<void> {
   await mailer.send({
-    to: event.customer_email,
+    to: event.email ?? event.customer_email,
     template: "order-receipt",
     data: {
       orderId: event.order_id,

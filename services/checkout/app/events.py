@@ -10,6 +10,7 @@ def order_placed_payload(order: Order) -> dict:
         "version": 1,
         "order_id": order.id,
         "customer_id": order.customer_id,
+        "email": order.customer_email,
         "customer_email": order.customer_email,
         "total_cents": order.total_cents,
         "currency": order.currency,
