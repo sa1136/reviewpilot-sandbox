@@ -10,7 +10,7 @@ def order_placed_payload(order: Order) -> dict:
         "version": 1,
         "order_id": order.id,
         "customer_id": order.customer_id,
-        "customer_email": order.customer_email,
+        "email": order.customer_email,
         "total_cents": order.total_cents,
         "currency": order.currency,
         "shipping_address": asdict(order.shipping_address),
