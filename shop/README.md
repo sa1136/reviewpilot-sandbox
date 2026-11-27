@@ -19,3 +19,4 @@ primary database, then the new web containers start (rolling, 6 containers).
 Scheduled jobs (cron on the worker box, see `ops/crontab`):
 
 - `purge_pageviews` daily at 03:00 UTC
+- `recalculate_loyalty_tiers` daily at 04:30 UTC

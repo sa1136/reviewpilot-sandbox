@@ -1,2 +1,3 @@
 # m h dom mon dow  command
 0 3 * * *  cd /srv/shop && .venv/bin/python manage.py purge_pageviews >> /var/log/shop/cron.log 2>&1
+30 4 * * *  cd /srv/shop && .venv/bin/python manage.py recalculate_loyalty_tiers >> /var/log/shop/cron.log 2>&1
