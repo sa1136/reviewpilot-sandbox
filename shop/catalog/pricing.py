@@ -8,5 +8,10 @@ def unit_price(product) -> Decimal:
     return product.price
 
 
+def unit_price_cents(product) -> int:
+    """unit_price in cents, for clients that do integer money math."""
+    return int(unit_price(product) * 100)
+
+
 def on_sale(product) -> bool:
     return unit_price(product) < product.price
