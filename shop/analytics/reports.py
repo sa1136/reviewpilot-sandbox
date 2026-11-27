@@ -22,3 +22,12 @@ def daily_visitors(day) -> int:
         .exclude(session_key="")
         .aggregate(n=Count("session_key", distinct=True))["n"]
     )
+
+
+def session_journey(session_key: str, since) -> list[str]:
+    """Paths one session visited since a datetime, in order."""
+    return list(
+        PageView.objects.filter(session_key=session_key, created_at__gte=since)
+        .order_by("created_at")
+        .values_list("path", flat=True)
+    )
