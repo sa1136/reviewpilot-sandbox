@@ -17,7 +17,7 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.PENDING)
     total_cents = models.IntegerField()
     currency = models.CharField(max_length=3, default="USD")
-    shipping_country = models.CharField(max_length=2, null=True, blank=True)
+    shipping_country = models.CharField(max_length=2, default="US")
     created_at = models.DateTimeField(auto_now_add=True, db_index=True)
 
 

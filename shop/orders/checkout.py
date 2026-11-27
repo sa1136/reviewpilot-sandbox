@@ -10,7 +10,7 @@ class CheckoutError(Exception):
     pass
 
 
-def place_order(email: str, lines: list, payment_token: str, shipping_country: str | None = None):
+def place_order(email: str, lines: list, payment_token: str, shipping_country: str = "US"):
     """lines: (product, quantity) pairs from the cart."""
     if not lines:
         raise CheckoutError("cart is empty")
