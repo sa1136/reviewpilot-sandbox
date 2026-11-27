@@ -10,11 +10,11 @@ def make(price, sale=None):
 
 
 def test_unit_price_uses_lower_sale_price():
-    assert unit_price(make("12.00", "9.50")) == Decimal("9.50")
+    assert unit_price(make("12.00", "9.50")) == 950
 
 
 def test_unit_price_ignores_higher_sale_price():
-    assert unit_price(make("12.00", "15.00")) == Decimal("12.00")
+    assert unit_price(make("12.00", "15.00")) == 1200
 
 
 def test_on_sale():
@@ -23,4 +23,6 @@ def test_on_sale():
 
 
 def test_product_json():
-    assert product_json(make("12.00", "9.50"))["price"] == "9.50"
+    data = product_json(make("12.00", "9.50"))
+    assert data["price"] == "9.50"
+    assert data["price_cents"] == 950
