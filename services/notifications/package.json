@@ -1,0 +1,8 @@
+{
+  "name": "notifications",
+  "private": true,
+  "type": "module",
+  "scripts": { "test": "vitest run", "typecheck": "tsc --noEmit" },
+  "dependencies": { "@aws-sdk/client-sesv2": "^3.600.0", "@aws-sdk/client-sqs": "^3.600.0" },
+  "devDependencies": { "typescript": "^5.6.0", "vitest": "^2.1.0" }
+}
