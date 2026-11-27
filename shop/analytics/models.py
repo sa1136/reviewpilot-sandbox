@@ -12,4 +12,7 @@ class PageView(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        indexes = [models.Index(fields=["created_at"], name="analytics_pv_created")]
+        indexes = [
+            models.Index(fields=["created_at"], name="analytics_pv_created"),
+            models.Index(fields=["session_key", "created_at"], name="analytics_pv_session_created"),
+        ]
