@@ -3,6 +3,7 @@ export interface OrderPlacedEvent {
   version: number;
   order_id: number;
   customer_id: number;
+  email?: string;
   customer_email: string;
   total_cents: number;
   currency: string;
