@@ -1,7 +1,7 @@
 import json
 from unittest.mock import MagicMock
 
-from fulfillment.worker import handle_message
+from fulfillment.worker import ShipmentRequest, handle_message
 
 EVENT = {
     "type": "order.placed",
@@ -11,7 +11,7 @@ EVENT = {
     "customer_email": "ana@example.com",
     "total_cents": 4500,
     "currency": "EUR",
-    "shipping_address": {
+    "shipping": {
         "name": "Ana Ruiz",
         "line1": "Calle Mayor 1",
         "line2": "",
@@ -41,3 +41,10 @@ def test_ignores_other_events():
     wms = MagicMock()
     handle_message(json.dumps({"type": "order.cancelled", "order_id": 1}), wms)
     wms.create_shipment.assert_not_called()
+
+
+def test_shipment_request_from_event():
+    request = ShipmentRequest.from_event(EVENT)
+    assert request.reference == "order-42"
+    assert request.postal_code == "28013"
+    assert request.items == [("MUG-1", 2)]
