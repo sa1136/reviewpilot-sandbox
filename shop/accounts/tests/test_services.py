@@ -1,5 +1,6 @@
 import pytest
 
+from accounts.models import User
 from accounts.services import create_guest_user, get_user_by_email
 
 pytestmark = pytest.mark.django_db
@@ -11,7 +12,8 @@ def test_get_user_by_email_ignores_case_and_spaces(django_user_model):
 
 
 def test_get_user_by_email_unknown():
-    assert get_user_by_email("nobody@example.com") is None
+    with pytest.raises(User.DoesNotExist):
+        get_user_by_email("nobody@example.com")
 
 
 def test_create_guest_user_is_inactive():
