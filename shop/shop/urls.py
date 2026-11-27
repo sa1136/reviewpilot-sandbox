@@ -9,5 +9,6 @@ urlpatterns = [
     path("api/products/<str:sku>/", catalog_views.product_detail),
     path("api/checkout/", order_views.checkout),
     path("api/orders/<int:order_id>/", order_views.order_detail),
+    path("staff/orders/export.csv", order_views.export_orders),
     path("api/password-reset/", account_views.request_password_reset),
 ]

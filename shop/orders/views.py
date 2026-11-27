@@ -1,12 +1,14 @@
 import json
+from datetime import date, datetime, time, timedelta, timezone
 
-from django.contrib.auth.decorators import login_required
-from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.http import HttpResponseBadRequest, JsonResponse, StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.decorators.http import require_POST
 
 from catalog.models import Product
 from orders.checkout import CheckoutError, place_order
+from orders.exports import iter_orders_csv
 from orders.models import Order
 from orders.money import format_cents
 from orders.payments import PaymentDeclined
@@ -43,3 +45,23 @@ def order_detail(request, order_id):
             ],
         }
     )
+
+
+def _day_start(value: str) -> datetime:
+    return datetime.combine(date.fromisoformat(value), time.min, tzinfo=timezone.utc)
+
+
+@user_passes_test(lambda u: u.is_staff)
+def export_orders(request):
+    """CSV of orders between ?start= and ?end= (ISO dates, end exclusive). Default: last 30 days."""
+    today = datetime.now(timezone.utc).date()
+    try:
+        start = _day_start(request.GET.get("start") or (today - timedelta(days=30)).isoformat())
+        end = _day_start(request.GET.get("end") or today.isoformat())
+    except ValueError:
+        return HttpResponseBadRequest("start and end must be YYYY-MM-DD")
+    if end <= start:
+        return HttpResponseBadRequest("end must be after start")
+    response = StreamingHttpResponse(iter_orders_csv(start, end), content_type="text/csv")
+    response["Content-Disposition"] = f'attachment; filename="orders-{start:%Y%m%d}.csv"'
+    return response
