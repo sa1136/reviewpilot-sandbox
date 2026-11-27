@@ -5,9 +5,9 @@ def normalize_email(email: str) -> str:
     return email.strip().lower()
 
 
-def get_user_by_email(email: str) -> User | None:
-    """The user with this email address, or None if there is no account."""
-    return User.objects.filter(email=normalize_email(email)).first()
+def get_user_by_email(email: str) -> User:
+    """The user with this email address. Raises User.DoesNotExist if there is no account."""
+    return User.objects.get(email=normalize_email(email))
 
 
 def create_guest_user(email: str) -> User:
