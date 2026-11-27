@@ -20,7 +20,7 @@ def checkout(request):
     lines = [(p, skus[p.sku]) for p in products if skus[p.sku] > 0]
     try:
         order = place_order(
-            data["email"], lines, data["payment_token"], data.get("shipping_country")
+            data["email"], lines, data["payment_token"], data.get("shipping_country") or "US"
         )
     except CheckoutError as exc:
         return JsonResponse({"error": str(exc)}, status=400)
